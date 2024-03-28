@@ -28,7 +28,19 @@ using namespace std;
 class Solution {
 public:
     int firstDayBeenInAllRooms(vector<int>& nextVisit) {
-
+        int n=nextVisit.size();
+        int mod_num=1e9+7;
+        vector<int> dp(n,0);
+        dp[0]=0;
+        for(int i=1;i<n;i++){
+            dp[i]=(dp[i-1]+1+dp[i-1]-dp[nextVisit[i-1]]+1)%mod_num;
+            //dp[i-1] 第一次走到i-1
+            //1 从i-1走到nextVisit[i-1]
+            //dp[i-1]-dp[nextVisit[i-1]] 从nextVisit[i-1]再次走到i-1
+            //1 从i-1走到i
+            if(dp[i]<0) dp[i]+=mod_num; //出现取余和减法，要考虑可能出现减法结果为负
+        }
+        return dp[n-1];
     }
 };
 // @lc code=end
@@ -37,7 +49,7 @@ public:
 
 /*
 // @lcpr case=start
-// [0,0]\n
+// [0,0,0,0,0,0]\n
 // @lcpr case=end
 
 // @lcpr case=start
